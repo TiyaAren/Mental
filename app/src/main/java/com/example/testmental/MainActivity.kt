@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.testmental.screen.emotions.Emotion
+import com.example.testmental.screen.emotions.MoodScreen
 import com.example.testmental.ui.theme.TestMentalTheme
 
 class MainActivity : ComponentActivity() {
@@ -12,7 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestMentalTheme {
-                ColorSelectableCalendar()
+              Emotion()
             }
         }
     }

@@ -10,7 +10,7 @@ val ColorGradient1 = Color(0xFFe262e6)
 val ColorGradient2 = Color(0xFF9f62ea)
 val ColorGradient3 = Color(0xFF5264f0)
 
-val ColorBackground = Color(0xFFF4DCF7).copy(alpha = 0.4f)
+val ColorBackground = Color(0xFFEBEBEB)
 val ColorSurface = Color.White
 val ColorImageShadow = Color(0xFFfdc228)
 val ColorWindForecast = Color.White.copy(alpha = 0.2f)
@@ -20,3 +20,10 @@ val ColorTextPrimary = Color(0xFF2c2e35)
 val ColorTextPrimaryVariant = ColorTextPrimary.copy(alpha = 0.7f)
 val ColorTextSecondary = Color.White
 val ColorTextSecondaryVariant = ColorTextSecondary.copy(alpha = 0.7f)
+
+val ColorButtonEmotions = Color(0xFF68BBFF).copy(alpha = 0.3f) // Отлично (голубой)
+val ColorMoodExcellent = Color(0xFF68BBFF)  // Отлично (голубой)
+val ColorMoodGood = Color(0xFF21C23E)      // Хорошо (зеленый)
+val ColorMoodAverage = Color(0xFFE9D32C)   // Средне (желтый)
+val ColorMoodFair = Color(0xFFDB8B3B)      // Так себе (оранжевый)
+val ColorMoodPoor = Color(0xFFCB1E00)      // Плохо (красный)
