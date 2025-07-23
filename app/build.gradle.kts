@@ -42,6 +42,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.accompanist.flowlayout)
+
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.compose.v280)
     implementation(libs.androidx.core.ktx)
