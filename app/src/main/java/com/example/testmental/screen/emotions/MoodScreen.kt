@@ -28,6 +28,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,14 +42,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.testmental.R
+import com.example.testmental.clickable
 import com.example.testmental.screen.SurveyViewModel
 import com.example.testmental.ui.theme.ColorBackground
+import com.example.testmental.ui.theme.ColorButtonEmotionsOnClick
 import com.example.testmental.ui.theme.ColorMoodAverage
 import com.example.testmental.ui.theme.ColorMoodExcellent
 import com.example.testmental.ui.theme.ColorMoodFair
 import com.example.testmental.ui.theme.ColorMoodGood
 import com.example.testmental.ui.theme.ColorMoodPoor
 import com.example.testmental.ui.theme.ColorMoodTerrible
+import com.example.testmental.ui.theme.ColorTextPrimary05
 import com.example.testmental.ui.theme.ColorWindForecast
 
 @Composable
@@ -59,6 +65,7 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
         Mood("Плохо", Icons.Default.SentimentVeryDissatisfied, color = ColorMoodPoor),
         Mood("Ужасно", drawableRes = R.drawable.ic_terrible, color = ColorMoodTerrible)
     )
+    val selectedItem = remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -113,16 +120,27 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
 
                 )
 
-                moods.forEachIndexed { index, mood ->
-                    MoodItem(mood)
+                moods.forEach { mood ->
+                    val isSelected = selectedItem.value == mood.label
+                    MoodItem(
+                        mood = mood,
+                        isSelected = isSelected,
+                        onClick = { selectedItem.value = mood.label } // Выбор одного элемента
+                    )
                     HorizontalDivider(thickness = 1.dp, color = mood.color.copy(alpha = 0.5f))
-
                 }
 
             }
         }
         Button(
-            onClick = { /* TODO */ },
+            onClick = {
+                selectedItem.value?.let { label ->
+                    val mood = moods.find { it.label == label }
+                    mood?.let { moodViewModel.selectMood(it) }
+                }
+                navController.navigate("emotion")
+            },
+            enabled = selectedItem.value != null,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
@@ -130,17 +148,26 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
         ) {
             Text("Продолжить")
         }
+
     }
 }
 
 
 @Composable
-fun MoodItem(mood: Mood) {
+fun MoodItem(
+    mood: Mood,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(vertical = 32.dp)
+            .padding(vertical = 10.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(if (isSelected) ColorTextPrimary05 else Color.Transparent) // Без фона по умолчанию
+            .padding(vertical = 22.dp)
             .fillMaxWidth()
+            .clickable { onClick() }
     ) {
         if (mood.imageVector != null) {
             Icon(
@@ -167,6 +194,8 @@ fun MoodItem(mood: Mood) {
         )
     }
 }
+
+
 
 
 data class Mood(

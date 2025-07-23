@@ -8,24 +8,39 @@ import androidx.lifecycle.ViewModel
 import com.example.testmental.screen.emotions.Mood
 
 class SurveyViewModel : ViewModel() {
-    var selectedMood by mutableStateOf<Mood?>(null)
-        private set
+    // Выбранное настроение (только одно)
+    private val _selectedMood = mutableStateOf<Mood?>(null)
+    val selectedMood: Mood? get() = _selectedMood.value
 
-    var selectedEmotions = mutableStateListOf<String>()
-        private set
+    // Выбранные эмоции (несколько)
+    private val _selectedEmotions = mutableStateListOf<String>()
+    val selectedEmotions: List<String> get() = _selectedEmotions
 
-    var selectedActivities = mutableStateListOf<String>()
-        private set
+    // Выбранные активности (несколько)
+    private val _selectedActivities = mutableStateListOf<String>()
+    val selectedActivities: List<String> get() = _selectedActivities
 
-    fun selectMood(mood: Mood) { selectedMood = mood }
-
-    fun toggleEmotion(emotion: String) {
-        if (selectedEmotions.contains(emotion)) selectedEmotions.remove(emotion)
-        else selectedEmotions.add(emotion)
+    // Устанавливаем настроение
+    fun selectMood(mood: Mood) {
+        _selectedMood.value = mood
     }
 
+    // Переключение эмоций (мультивыбор)
+    fun toggleEmotion(emotion: String) {
+        if (_selectedEmotions.contains(emotion)) _selectedEmotions.remove(emotion)
+        else _selectedEmotions.add(emotion)
+    }
+
+    // Переключение активностей (мультивыбор)
     fun toggleActivity(activity: String) {
-        if (selectedActivities.contains(activity)) selectedActivities.remove(activity)
-        else selectedActivities.add(activity)
+        if (_selectedActivities.contains(activity)) _selectedActivities.remove(activity)
+        else _selectedActivities.add(activity)
+    }
+
+    // Очистка всех данных (если понадобится)
+    fun resetAll() {
+        _selectedMood.value = null
+        _selectedEmotions.clear()
+        _selectedActivities.clear()
     }
 }

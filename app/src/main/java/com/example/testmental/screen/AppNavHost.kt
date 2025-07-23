@@ -16,6 +16,6 @@ fun AppNavHost(navController: NavHostController, surveyViewModel: SurveyViewMode
         composable("mood") { MoodScreen(navController, surveyViewModel) }
         composable("emotion") { Emotion(navController, surveyViewModel) }
         composable("activity") { ActivitiesScreen(navController, surveyViewModel) }
-        composable("Main") { MainScreen(navController, surveyViewModel) }
+        composable("main") { MainScreen(navController, surveyViewModel) }
     }
 }

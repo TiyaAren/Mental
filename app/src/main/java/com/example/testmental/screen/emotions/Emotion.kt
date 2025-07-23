@@ -102,7 +102,7 @@ fun Emotion(navController: NavController, moodViewModel: SurveyViewModel) {
         Row(
             verticalAlignment = Alignment.CenterVertically // Выравнивание по центру вертикально
         ) {
-            IconButton(onClick = { /* действие назад */ }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     imageVector = Icons.Default.ChevronLeft,
                     contentDescription = "Назад",
@@ -180,7 +180,12 @@ fun Emotion(navController: NavController, moodViewModel: SurveyViewModel) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { /* обработка выбранных эмоций */ },
+
+            onClick = {
+
+                navController.navigate("activity")
+            },
+            enabled = selectedEmotions.isNotEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
 

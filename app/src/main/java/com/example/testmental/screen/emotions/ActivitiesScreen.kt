@@ -15,11 +15,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.DirectionsRun
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.CleaningServices
@@ -167,7 +165,9 @@ fun ActivitiesScreen(navController: NavController, moodViewModel: SurveyViewMode
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = { /* TODO: handle submit */ },
+            onClick = {
+                navController.navigate("main")
+            },
             enabled = selectedItems.isNotEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
