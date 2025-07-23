@@ -22,6 +22,7 @@ val ColorTextSecondary = Color.White
 val ColorTextSecondaryVariant = ColorTextSecondary.copy(alpha = 0.8f)
 
 val ColorButtonEmotions = Color(0xFF68BBFF).copy(alpha = 0.3f)
+val ColorButtonEmotionsOnClick = Color(0xFF68BBFF).copy(alpha = 0.6f)
 val ColorMoodExcellent = Color(0xFF68BBFF)
 val ColorMoodGood = Color(0xFF21C23E)
 val ColorMoodAverage = Color(0xFFE9D32C)

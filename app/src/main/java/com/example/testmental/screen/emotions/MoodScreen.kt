@@ -37,7 +37,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.testmental.R
+import com.example.testmental.screen.SurveyViewModel
 import com.example.testmental.ui.theme.ColorBackground
 import com.example.testmental.ui.theme.ColorMoodAverage
 import com.example.testmental.ui.theme.ColorMoodExcellent
@@ -48,7 +50,7 @@ import com.example.testmental.ui.theme.ColorMoodTerrible
 import com.example.testmental.ui.theme.ColorWindForecast
 
 @Composable
-fun MoodScreen() {
+fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
     val moods = listOf(
         Mood("Отлично", Icons.Default.SentimentVerySatisfied, color = ColorMoodExcellent),
         Mood("Хорошо", Icons.Default.SentimentSatisfied, color = ColorMoodGood),

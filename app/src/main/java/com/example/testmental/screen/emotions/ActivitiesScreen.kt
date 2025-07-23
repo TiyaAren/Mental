@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bedtime
+import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Group
@@ -44,10 +46,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.testmental.screen.SurveyViewModel
+import com.example.testmental.ui.theme.ColorBackground
+import com.example.testmental.ui.theme.ColorButtonEmotions
+import com.example.testmental.ui.theme.ColorButtonEmotionsOnClick
+import com.example.testmental.ui.theme.ColorWindForecast
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
-fun ActivitiesScreen() {
+fun ActivitiesScreen(navController: NavController, moodViewModel: SurveyViewModel) {
     val activities = listOf(
         ActivityItem("Семья", Icons.Default.Home),
         ActivityItem("Работа", Icons.Default.Work), // Новая иконка
@@ -69,9 +77,10 @@ fun ActivitiesScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F4F4))
+            .background(ColorBackground)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .verticalScroll(rememberScrollState())
+
     ) {
         // Назад + заголовок
         Row(
@@ -79,7 +88,9 @@ fun ActivitiesScreen() {
             modifier = Modifier.padding(top = 16.dp)
         ) {
             IconButton(onClick = { /* TODO: handle back */ }) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
+                Icon( imageVector = Icons.Default.ChevronLeft,
+                    contentDescription = "Назад",
+                    modifier = Modifier.size(28.dp))
             }
             Text(
                 text = "Ваши отметки занятий",
@@ -94,7 +105,7 @@ fun ActivitiesScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
+                .background(ColorWindForecast)
                 .padding(24.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -121,11 +132,11 @@ fun ActivitiesScreen() {
                                 imageVector = item.icon,
                                 contentDescription = item.label,
                                 tint = Color.Black, modifier = Modifier
-//                                    .size(24.dp)
+
                                     .clip(RoundedCornerShape(50))
                                     .background(
-                                        if (isSelected) Color(0xFF90CAF9)
-                                        else Color(0xFFE3F2FD)
+                                        if (isSelected) ColorButtonEmotionsOnClick
+                                        else ColorButtonEmotions
                                     )
                                     .padding(12.dp)
                                     .clickable {

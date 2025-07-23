@@ -15,11 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.testmental.screen.SurveyViewModel
 import com.example.testmental.screen.navig.CalendarScreen
 import com.example.testmental.screen.navig.HomeScreen
 import com.example.testmental.screen.navig.NotesScreen
@@ -35,7 +37,7 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController, moodViewModel: SurveyViewModel) {
     val navController = rememberNavController()
     val items = listOf(
         BottomNavScreen.Home,
