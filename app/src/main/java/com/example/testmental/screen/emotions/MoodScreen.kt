@@ -29,6 +29,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -56,7 +58,7 @@ import com.example.testmental.ui.theme.ColorTextPrimary05
 import com.example.testmental.ui.theme.ColorWindForecast
 
 @Composable
-fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
+fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, selectedDate: String? = null) {
     val moods = listOf(
         Mood("Отлично", Icons.Default.SentimentVerySatisfied, color = ColorMoodExcellent),
         Mood("Хорошо", Icons.Default.SentimentSatisfied, color = ColorMoodGood),
@@ -65,6 +67,9 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
         Mood("Плохо", Icons.Default.SentimentVeryDissatisfied, color = ColorMoodPoor),
         Mood("Ужасно", drawableRes = R.drawable.ic_terrible, color = ColorMoodTerrible)
     )
+    val formatter = remember { DateTimeFormatter.ofPattern("yyyy-MM-dd") }
+    val dateToDisplay = selectedDate ?: LocalDate.now().format(formatter)
+
     val selectedItem = remember { mutableStateOf<String?>(null) }
 
     Column(
@@ -77,9 +82,9 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
     ) {
         Row(
 
-            verticalAlignment = Alignment.CenterVertically // Выравнивание по центру вертикально
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { /* действие назад */ }) {
+            IconButton(onClick = {  navController.navigate("main")}) {
                 Icon(
                     imageVector = Icons.Default.ChevronLeft,
                     contentDescription = "Назад",
@@ -102,6 +107,7 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel) {
         ) {
 
             Column(verticalArrangement = Arrangement.Bottom) {
+                Text(text = "Выбранная дата: $dateToDisplay")
 
                 Text(
                     text = "Добрый день!",

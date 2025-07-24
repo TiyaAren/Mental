@@ -1,15 +1,8 @@
 package com.example.testmental.screen.navig
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.testmental.rememberFirstMostVisibleMonth
 import com.kizitonwose.calendar.compose.CalendarState
 import com.kizitonwose.calendar.compose.HorizontalCalendar
@@ -40,10 +34,10 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun CalendarScreen() {
+fun CalendarScreen(navController: NavHostController) {
     val currentMonth = remember { YearMonth.now() }
-    val startMonth = remember { currentMonth.minusMonths(12) }
-    val endMonth = remember { currentMonth.plusMonths(12) }
+    val startMonth = remember { currentMonth.minusMonths(24) }
+    val endMonth = remember { currentMonth.plusMonths(0) }
     val daysOfWeek = remember { daysOfWeek() }
     val calendarState = rememberCalendarState(
         startMonth = startMonth,
@@ -66,29 +60,28 @@ fun CalendarScreen() {
             .fillMaxSize()
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
-
     ) {
         Text(
             text = monthLabel,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding( 16.dp)
+            modifier = Modifier
+                .padding(16.dp)
                 .align(Alignment.CenterHorizontally),
         )
-        // Календарь
+
         HorizontalCalendar(
             state = calendarState,
             monthHeader = { MonthHeader(daysOfWeek) },
             dayContent = { day ->
-                ColoredDay(day = day, colorMap = dayColors)
+                ColoredDay(day = day, colorMap = dayColors) {
+                    navController.navigate("mood/${day.date}")
+                }
             }
         )
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Название месяца и года
-
-
-        // Кнопка "Отметить сегодня"
         Button(onClick = {
             val todayDay = calendarState.firstVisibleMonth.weekDays
                 .flatten()
@@ -103,7 +96,6 @@ fun CalendarScreen() {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Кнопки для раскраски других дат
         Row {
             Button(onClick = {
                 val day = findDayByDayOfMonth(calendarState, 5)
@@ -112,14 +104,12 @@ fun CalendarScreen() {
                 Text("5 → Красный")
             }
 
-
             Button(onClick = {
                 val day = findDayByDayOfMonth(calendarState, 10)
                 day?.let { dayColors[it] = Color.Green }
             }) {
                 Text("10 → Зелёный")
             }
-
 
             Button(onClick = {
                 val day = findDayByDayOfMonth(calendarState, 20)
@@ -128,13 +118,11 @@ fun CalendarScreen() {
                 Text("20 → Синий")
             }
         }
-
-
     }
 }
 
 @Composable
-fun ColoredDay(day: CalendarDay, colorMap: Map<CalendarDay, Color>) {
+fun ColoredDay(day: CalendarDay, colorMap: Map<CalendarDay, Color>, onClick: () -> Unit) {
     val bgColor = colorMap[day] ?: Color.Transparent
 
     Box(
@@ -142,7 +130,8 @@ fun ColoredDay(day: CalendarDay, colorMap: Map<CalendarDay, Color>) {
             .aspectRatio(1f)
             .padding(4.dp)
             .clip(CircleShape)
-            .background(bgColor),
+            .background(bgColor)
+            .clickable(enabled = day.position == DayPosition.MonthDate) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         val textColor = when (day.position) {
@@ -178,4 +167,3 @@ fun findDayByDayOfMonth(state: CalendarState, dayOfMonth: Int): CalendarDay? {
         .flatten()
         .firstOrNull { it.date.dayOfMonth == dayOfMonth && it.position == DayPosition.MonthDate }
 }
-

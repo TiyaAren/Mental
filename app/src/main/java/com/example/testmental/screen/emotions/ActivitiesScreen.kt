@@ -85,7 +85,7 @@ fun ActivitiesScreen(navController: NavController, moodViewModel: SurveyViewMode
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(top = 16.dp)
         ) {
-            IconButton(onClick = { /* TODO: handle back */ }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon( imageVector = Icons.Default.ChevronLeft,
                     contentDescription = "Назад",
                     modifier = Modifier.size(28.dp))

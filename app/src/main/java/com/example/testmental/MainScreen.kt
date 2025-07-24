@@ -80,7 +80,7 @@ fun MainScreen(navController: NavController, moodViewModel: SurveyViewModel) {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(BottomNavScreen.Home.route) { HomeScreen() }
-            composable(BottomNavScreen.Calendar.route) { CalendarScreen() }
+            composable(BottomNavScreen.Calendar.route) { CalendarScreen(navController) }
             composable(BottomNavScreen.Notes.route) { NotesScreen() }
             composable(BottomNavScreen.Profile.route) { ProfileScreen() }
 

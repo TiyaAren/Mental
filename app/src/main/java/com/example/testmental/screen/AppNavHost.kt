@@ -10,10 +10,17 @@ import com.example.testmental.screen.emotions.ActivitiesScreen
 import com.example.testmental.screen.emotions.Emotion
 import com.example.testmental.screen.emotions.MoodScreen
 
+
 @Composable
 fun AppNavHost(navController: NavHostController, surveyViewModel: SurveyViewModel = viewModel()) {
-    NavHost(navController, startDestination = "mood") {
-        composable("mood") { MoodScreen(navController, surveyViewModel) }
+    NavHost(navController, startDestination = "start") {
+        composable("start") {
+            StartSurveyScreen(navController)
+        }
+        composable("mood/{date}") { backStackEntry ->
+            val date = backStackEntry.arguments?.getString("date")
+            MoodScreen(navController, surveyViewModel, date)
+        }
         composable("emotion") { Emotion(navController, surveyViewModel) }
         composable("activity") { ActivitiesScreen(navController, surveyViewModel) }
         composable("main") { MainScreen(navController, surveyViewModel) }
