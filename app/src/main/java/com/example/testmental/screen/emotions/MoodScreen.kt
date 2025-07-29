@@ -28,7 +28,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,9 +43,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.testmental.R
 import com.example.testmental.clickable
+import com.example.testmental.ui.model.Mood
 import com.example.testmental.screen.SurveyViewModel
 import com.example.testmental.ui.theme.ColorBackground
-import com.example.testmental.ui.theme.ColorButtonEmotionsOnClick
 import com.example.testmental.ui.theme.ColorMoodAverage
 import com.example.testmental.ui.theme.ColorMoodExcellent
 import com.example.testmental.ui.theme.ColorMoodFair
@@ -204,9 +202,3 @@ fun MoodItem(
 
 
 
-data class Mood(
-    val label: String,
-    val imageVector: ImageVector? = null, // Для Icons.Default
-    val drawableRes: Int? = null,         // Для кастомных иконок
-    val color: Color
-)

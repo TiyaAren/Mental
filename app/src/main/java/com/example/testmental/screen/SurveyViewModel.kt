@@ -1,10 +1,10 @@
 package com.example.testmental.screen
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.testmental.screen.emotions.Mood
+import com.example.testmental.ui.model.Mood
+import com.example.testmental.domain.model.MoodEntry
 
 class SurveyViewModel : ViewModel() {
     private val _entries = mutableStateListOf<MoodEntry>()
@@ -50,12 +50,3 @@ class SurveyViewModel : ViewModel() {
 
 }
 
-data class MoodEntry(
-    val mood: Mood?,
-    val emotions: List<String>,
-    val activities: List<String>
-){
-    init {
-        Log.d("MoodEntry", "Создан: mood=${mood?.label}, emotions=$emotions, activities=$activities")
-    }
-}

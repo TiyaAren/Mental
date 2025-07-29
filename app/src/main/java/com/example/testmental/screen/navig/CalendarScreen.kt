@@ -96,28 +96,28 @@ fun CalendarScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Row {
-            Button(onClick = {
-                val day = findDayByDayOfMonth(calendarState, 5)
-                day?.let { dayColors[it] = Color.Red }
-            }) {
-                Text("5 → Красный")
-            }
-
-            Button(onClick = {
-                val day = findDayByDayOfMonth(calendarState, 10)
-                day?.let { dayColors[it] = Color.Green }
-            }) {
-                Text("10 → Зелёный")
-            }
-
-            Button(onClick = {
-                val day = findDayByDayOfMonth(calendarState, 20)
-                day?.let { dayColors[it] = Color.Blue }
-            }) {
-                Text("20 → Синий")
-            }
-        }
+//        Row {
+//            Button(onClick = {
+//                val day = findDayByDayOfMonth(calendarState, 5)
+//                day?.let { dayColors[it] = Color.Red }
+//            }) {
+//                Text("5 → Красный")
+//            }
+//
+//            Button(onClick = {
+//                val day = findDayByDayOfMonth(calendarState, 10)
+//                day?.let { dayColors[it] = Color.Green }
+//            }) {
+//                Text("10 → Зелёный")
+//            }
+//
+//            Button(onClick = {
+//                val day = findDayByDayOfMonth(calendarState, 20)
+//                day?.let { dayColors[it] = Color.Blue }
+//            }) {
+//                Text("20 → Синий")
+//            }
+//        }
     }
 }
 

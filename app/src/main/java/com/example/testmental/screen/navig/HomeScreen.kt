@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.testmental.domain.model.MoodEntry
 
 @Composable
 fun HomeScreen() {
@@ -57,118 +58,112 @@ fun HomeScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(historyItems) { item ->
-                MoodHistoryItem(item)
-            }
-        }
+//        LazyColumn(modifier = Modifier.fillMaxSize()) {
+//            items(historyItems) { item ->
+//                MoodHistoryItem(item)
+//            }
+//        }
     }
 }
 
 // Данные одной записи истории
-@Composable
-fun MoodHistoryItem(item: MoodEntry) {
-    val bgColor = when (item.color) {
-        "blue" -> Color(0xFFE5F0FD)
-        "green" -> Color(0xFFE7F6EC)
-        "yellow" -> Color(0xFFFFF9E5)
-        else -> Color.White
-    }
-    val iconColor = when (item.color) {
-        "blue" -> Color(0xFF409CFF)
-        "green" -> Color(0xFF4CAF50)
-        "yellow" -> Color(0xFFF9B100)
-        else -> Color.Gray
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .background(bgColor, RoundedCornerShape(16.dp))
-            .padding(16.dp)
-    ) {
-        Text(text = item.date, color = iconColor, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = item.mood,
-            color = iconColor,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            item.activities.forEach {
-                ActivityIcon(it, iconColor)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item.emotions.forEach {
-                EmotionChip(text = it, color = iconColor.copy(alpha = 0.2f), textColor = iconColor)
-            }
-        }
-    }
-}
-
-@Composable
-fun ActivityIcon(name: String, color: Color) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(imageVector = Icons.Default.Star, contentDescription = name, tint = color)
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(text = name, color = color, fontSize = 14.sp)
-    }
-}
-
-@Composable
-fun EmotionChip(text: String, color: Color, textColor: Color) {
-    Box(
-        modifier = Modifier
-            .background(color, RoundedCornerShape(16.dp))
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-    ) {
-        Text(text = text, color = textColor, fontSize = 14.sp)
-    }
-}
+//@Composable
+//fun MoodHistoryItem(item: MoodEntry) {
+//    val bgColor = when (item.color) {
+//        "blue" -> Color(0xFFE5F0FD)
+//        "green" -> Color(0xFFE7F6EC)
+//        "yellow" -> Color(0xFFFFF9E5)
+//        else -> Color.White
+//    }
+//    val iconColor = when (item.color) {
+//        "blue" -> Color(0xFF409CFF)
+//        "green" -> Color(0xFF4CAF50)
+//        "yellow" -> Color(0xFFF9B100)
+//        else -> Color.Gray
+//    }
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp, vertical = 8.dp)
+//            .background(bgColor, RoundedCornerShape(16.dp))
+//            .padding(16.dp)
+//    ) {
+//        Text(text = item.date, color = iconColor, fontWeight = FontWeight.SemiBold)
+//        Spacer(modifier = Modifier.height(4.dp))
+//
+//        Text(
+//            text = item.mood,
+//            color = iconColor,
+//            fontWeight = FontWeight.Bold,
+//            fontSize = 18.sp
+//        )
+//
+//        Spacer(modifier = Modifier.height(8.dp))
+//
+//        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+//            item.activities.forEach {
+//                ActivityIcon(it, iconColor)
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(8.dp))
+//
+//        FlowRow(
+//            horizontalArrangement = Arrangement.spacedBy(8.dp),
+//            verticalArrangement = Arrangement.spacedBy(8.dp)
+//        ) {
+//            item.emotions.forEach {
+//                EmotionChip(text = it, color = iconColor.copy(alpha = 0.2f), textColor = iconColor)
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun ActivityIcon(name: String, color: Color) {
+//    Row(verticalAlignment = Alignment.CenterVertically) {
+//        Icon(imageVector = Icons.Default.Star, contentDescription = name, tint = color)
+//        Spacer(modifier = Modifier.width(4.dp))
+//        Text(text = name, color = color, fontSize = 14.sp)
+//    }
+//}
+//
+//@Composable
+//fun EmotionChip(text: String, color: Color, textColor: Color) {
+//    Box(
+//        modifier = Modifier
+//            .background(color, RoundedCornerShape(16.dp))
+//            .padding(horizontal = 12.dp, vertical = 6.dp)
+//    ) {
+//        Text(text = text, color = textColor, fontSize = 14.sp)
+//    }
+//}
 
 // Модель данных
 
-data class MoodEntry(
-    val date: String, // пример: "СЕГОДНЯ, 27 ИЮЛЯ, ДОМ"
-    val mood: String, // пример: "Отлично"
-    val activities: List<String>, // пример: ["Семья", "Отдых", "Покупки"]
-    val emotions: List<String>, // пример: ["Счастье", "Радость"]
-    val color: String // "blue", "green", "yellow"
-)
 
-val historyItems = listOf(
-    MoodEntry(
-        date = "СЕГОДНЯ, 27 ИЮЛЯ, ДОМ",
-        mood = "Отлично",
-        activities = listOf("Семья", "Отдых", "Покупки"),
-        emotions = listOf("Счастье", "Радость", "Облегчение", "Умиротворённость", "Благодарность"),
-        color = "blue"
-    ),
-    MoodEntry(
-        date = "ВТОРНИК, 26 ИЮЛЯ, ПОЕЗДКА",
-        mood = "Хорошо",
-        activities = listOf("Отдых", "Игры"),
-        emotions = listOf("Радость", "Умиротворённость", "Надежда", "Гордость", "Энтузиазм"),
-        color = "green"
-    ),
-    MoodEntry(
-        date = "СРЕДА, 25 ИЮЛЯ, ДОМ",
-        mood = "Не плохо",
-        activities = listOf("Отдых", "Уборка", "Чтение"),
-        emotions = listOf("Беспокойство", "Подавленность"),
-        color = "yellow"
-    )
-)
+
+//val historyItems = listOf(
+//    MoodEntry(
+//        date = "СЕГОДНЯ, 27 ИЮЛЯ, ДОМ",
+//        mood = "Отлично",
+//        activities = listOf("Семья", "Отдых", "Покупки"),
+//        emotions = listOf("Счастье", "Радость", "Облегчение", "Умиротворённость", "Благодарность"),
+//        color = "blue"
+//    ),
+//    MoodEntry(
+//        date = "ВТОРНИК, 26 ИЮЛЯ, ПОЕЗДКА",
+//        mood = "Хорошо",
+//        activities = listOf("Отдых", "Игры"),
+//        emotions = listOf("Радость", "Умиротворённость", "Надежда", "Гордость", "Энтузиазм"),
+//        color = "green"
+//    ),
+//    MoodEntry(
+//        date = "СРЕДА, 25 ИЮЛЯ, ДОМ",
+//        mood = "Не плохо",
+//        activities = listOf("Отдых", "Уборка", "Чтение"),
+//        emotions = listOf("Беспокойство", "Подавленность"),
+//        color = "yellow"
+//    )
+//)
