@@ -1,4 +1,4 @@
-package com.example.testmental.screen.navig
+package com.example.testmental.ui.dashboard.calender
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

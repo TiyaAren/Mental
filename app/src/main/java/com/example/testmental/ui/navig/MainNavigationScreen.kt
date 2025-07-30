@@ -1,4 +1,4 @@
-package com.example.testmental
+package com.example.testmental.ui.navig
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,11 +21,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.testmental.screen.SurveyViewModel
-import com.example.testmental.screen.navig.CalendarScreen
-import com.example.testmental.screen.navig.HomeScreen
-import com.example.testmental.screen.navig.NotesScreen
-import com.example.testmental.screen.navig.ProfileScreen
+import com.example.testmental.ui.dashboard.calender.CalendarScreen
+import com.example.testmental.ui.dashboard.home.HomeScreen
+import com.example.testmental.ui.dashboard.notes.NotesScreen
+import com.example.testmental.ui.dashboard.profile.ProfileScreen
 
 sealed class BottomNavScreen(val route: String, val title: String, val icon: ImageVector) {
     object Home : BottomNavScreen("home", "Главная", Icons.Default.Home)
@@ -37,7 +36,7 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
 }
 
 @Composable
-fun MainScreen(navController: NavController, moodViewModel: SurveyViewModel) {
+fun MainNavigationScreen(navController: NavController, moodViewModel: SurveyViewModel) {
     val navController = rememberNavController()
     val items = listOf(
         BottomNavScreen.Home,

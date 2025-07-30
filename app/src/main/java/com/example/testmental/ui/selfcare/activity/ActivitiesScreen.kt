@@ -1,4 +1,4 @@
-package com.example.testmental.screen.emotions
+package com.example.testmental.ui.selfcare.activity
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,7 +45,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.testmental.screen.SurveyViewModel
+import com.example.testmental.ui.navig.SurveyViewModel
 import com.example.testmental.ui.theme.ColorBackground
 import com.example.testmental.ui.theme.ColorButtonEmotions
 import com.example.testmental.ui.theme.ColorButtonEmotionsOnClick

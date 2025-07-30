@@ -1,4 +1,4 @@
-package com.example.testmental.screen.emotions
+package com.example.testmental.ui.selfcare.mood
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.testmental.R
 import com.example.testmental.clickable
-import com.example.testmental.ui.model.Mood
-import com.example.testmental.screen.SurveyViewModel
+import com.example.testmental.ui.navig.model.MoodUiModel
+import com.example.testmental.ui.navig.SurveyViewModel
 import com.example.testmental.ui.theme.ColorBackground
 import com.example.testmental.ui.theme.ColorMoodAverage
 import com.example.testmental.ui.theme.ColorMoodExcellent
@@ -57,13 +57,13 @@ import com.example.testmental.ui.theme.ColorWindForecast
 
 @Composable
 fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, selectedDate: String? = null) {
-    val moods = listOf(
-        Mood("Отлично", Icons.Default.SentimentVerySatisfied, color = ColorMoodExcellent),
-        Mood("Хорошо", Icons.Default.SentimentSatisfied, color = ColorMoodGood),
-        Mood("Средне", Icons.Default.SentimentNeutral, color = ColorMoodAverage), // Жёлтый
-        Mood("Так себе", Icons.Default.SentimentDissatisfied, color = ColorMoodFair), // Коричневый
-        Mood("Плохо", Icons.Default.SentimentVeryDissatisfied, color = ColorMoodPoor),
-        Mood("Ужасно", drawableRes = R.drawable.ic_terrible, color = ColorMoodTerrible)
+    val moodUiModels = listOf(
+        MoodUiModel("Отлично", Icons.Default.SentimentVerySatisfied, color = ColorMoodExcellent),
+        MoodUiModel("Хорошо", Icons.Default.SentimentSatisfied, color = ColorMoodGood),
+        MoodUiModel("Средне", Icons.Default.SentimentNeutral, color = ColorMoodAverage), // Жёлтый
+        MoodUiModel("Так себе", Icons.Default.SentimentDissatisfied, color = ColorMoodFair), // Коричневый
+        MoodUiModel("Плохо", Icons.Default.SentimentVeryDissatisfied, color = ColorMoodPoor),
+        MoodUiModel("Ужасно", drawableRes = R.drawable.ic_terrible, color = ColorMoodTerrible)
     )
     val formatter = remember { DateTimeFormatter.ofPattern("yyyy-MM-dd") }
     val dateToDisplay = selectedDate ?: LocalDate.now().format(formatter)
@@ -124,10 +124,10 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, sel
 
                 )
 
-                moods.forEach { mood ->
+                moodUiModels.forEach { mood ->
                     val isSelected = selectedItem.value == mood.label
                     MoodItem(
-                        mood = mood,
+                        moodUiModel = mood,
                         isSelected = isSelected,
                         onClick = { selectedItem.value = mood.label } // Выбор одного элемента
                     )
@@ -139,7 +139,7 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, sel
         Button(
             onClick = {
                 selectedItem.value?.let { label ->
-                    val mood = moods.find { it.label == label }
+                    val mood = moodUiModels.find { it.label == label }
                     mood?.let { moodViewModel.selectMood(it) }
                 }
                 navController.navigate("emotion")
@@ -159,7 +159,7 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, sel
 
 @Composable
 fun MoodItem(
-    mood: Mood,
+    moodUiModel: MoodUiModel,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
@@ -173,27 +173,27 @@ fun MoodItem(
             .fillMaxWidth()
             .clickable { onClick() }
     ) {
-        if (mood.imageVector != null) {
+        if (moodUiModel.imageVector != null) {
             Icon(
-                imageVector = mood.imageVector,
-                contentDescription = mood.label,
-                tint = mood.color,
+                imageVector = moodUiModel.imageVector,
+                contentDescription = moodUiModel.label,
+                tint = moodUiModel.color,
                 modifier = Modifier.size(32.dp)
             )
-        } else if (mood.drawableRes != null) {
+        } else if (moodUiModel.drawableRes != null) {
             Icon(
-                painter = painterResource(id = mood.drawableRes),
-                contentDescription = mood.label,
-                tint = mood.color,
+                painter = painterResource(id = moodUiModel.drawableRes),
+                contentDescription = moodUiModel.label,
+                tint = moodUiModel.color,
                 modifier = Modifier.size(32.dp)
             )
         }
 
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = mood.label,
+            text = moodUiModel.label,
             fontSize = 20.sp,
-            color = mood.color,
+            color = moodUiModel.color,
             style = MaterialTheme.typography.bodyLarge
         )
     }

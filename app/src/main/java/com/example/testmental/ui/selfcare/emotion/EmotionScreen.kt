@@ -1,4 +1,4 @@
-package com.example.testmental.screen.emotions
+package com.example.testmental.ui.selfcare.emotion
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.testmental.screen.SurveyViewModel
+import com.example.testmental.ui.navig.SurveyViewModel
 import com.example.testmental.ui.theme.ColorBackground
 import com.example.testmental.ui.theme.ColorButtonEmotions
 import com.example.testmental.ui.theme.ColorTextPrimaryVariant
@@ -41,7 +41,7 @@ import com.example.testmental.ui.theme.ColorTextSecondaryVariant
 import com.example.testmental.ui.theme.ColorWindForecast
 
 @Composable
-fun Emotion(navController: NavController, moodViewModel: SurveyViewModel) {
+fun EmotionScreen(navController: NavController, moodViewModel: SurveyViewModel) {
     val emotions = listOf(
         "Восторг",
         "Радость",

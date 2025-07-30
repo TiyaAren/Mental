@@ -1,4 +1,4 @@
-package com.example.testmental.screen.navig
+package com.example.testmental.ui.dashboard.notes
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
