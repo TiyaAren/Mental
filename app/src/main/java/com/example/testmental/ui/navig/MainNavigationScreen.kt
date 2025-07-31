@@ -80,7 +80,7 @@ fun MainNavigationScreen(navController: NavController, moodViewModel: SurveyView
         ) {
             composable(BottomNavScreen.Home.route) { HomeScreen() }
             composable(BottomNavScreen.Calendar.route) { CalendarScreen(navController) }
-            composable(BottomNavScreen.Notes.route) { NotesScreen() }
+            composable(BottomNavScreen.Notes.route) { NotesScreen(navController) }
             composable(BottomNavScreen.Profile.route) { ProfileScreen() }
 
         }
