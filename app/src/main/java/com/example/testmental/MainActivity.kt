@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.example.testmental.ui.auth.SignUpScreen
+import com.example.testmental.ui.navig.AppNavHost
 import com.example.testmental.ui.theme.TestMentalTheme
 
 class MainActivity : ComponentActivity() {
@@ -14,9 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestMentalTheme {
-                val navController = rememberNavController()
-//                AppNavHost(navController)
-                SignUpScreen()
+                AppNavHost()
             }
         }
     }
