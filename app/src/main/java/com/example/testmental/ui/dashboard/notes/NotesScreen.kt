@@ -1,20 +1,50 @@
 package com.example.testmental.ui.dashboard.notes
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.testmental.clickable
+import java.util.Date
 
 @Composable
-fun NotesScreen() {
+fun NotesScreen(
+    navController: NavController,
+    viewModel: NotesViewModel = hiltViewModel()
+) {
+    val notes by viewModel.notes.collectAsState()
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Экран notes", style = MaterialTheme.typography.headlineMedium)
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                val newNote = viewModel.createNote()
+                navController.navigate("edit_note/${newNote.id}")
+            }) {
+                Icon(Icons.Default.Add, contentDescription = "Добавить")
+            }
+        }
+    ) { padding ->
+        LazyColumn(contentPadding = padding) {
+            items(notes) { note ->
+                ListItem(
+                    headlineContent = { Text(note.title.ifEmpty { "Без названия" }) },
+                    supportingContent = { Text("Создано: ${Date(note.createdAt)}") },
+                    modifier = Modifier.clickable {
+                        navController.navigate("edit_note/${note.id}")
+                    }
+                )
+            }
+        }
     }
 }
