@@ -22,7 +22,7 @@ class NotesViewModel @Inject constructor(
         viewModelScope.launch {
             val note = NoteEntity(
                 title = "",
-                content = "",
+                content = "",NoteEntity
                 createdAt = System.currentTimeMillis()
             )
             val newId = repository.insertNote(note)

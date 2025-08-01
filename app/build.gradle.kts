@@ -49,6 +49,16 @@ android {
 }
 
 dependencies {
+    // Room
+    implementation(libs.room.runtime)
+    kapt(libs.androidx.room.compiler)
+
+// Kotlin Extensions and Coroutines support for Room
+    implementation(libs.androidx.room.ktx)
+
+// Optional: Testing Room
+    testImplementation(libs.androidx.room.testing)
+
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler) // вместо implementation
