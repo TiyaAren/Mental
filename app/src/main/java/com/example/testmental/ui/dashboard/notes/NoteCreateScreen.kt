@@ -18,19 +18,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 @Composable
-fun NoteEditScreen(
-    noteId: String,
+fun NoteCreateScreen(
     navController: NavController,
     viewModel: NotesViewModel = hiltViewModel()
 ) {
-    val note = viewModel.getNoteById(noteId)
-    if (note == null) {
-        Text("Заметка не найдена")
-        return
-    }
-
-    var title by remember { mutableStateOf(note.title) }
-    var content by remember { mutableStateOf(note.content) }
+    var title by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(16.dp)) {
         OutlinedTextField(
@@ -46,10 +39,10 @@ fun NoteEditScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            viewModel.updateNote(note.copy(title = title, content = content))
-            navController.popBackStack()
+            val newNote = viewModel.createNote(title, content)
+            navController.navigate("edit_note/${newNote.id}")
         }) {
-            Text("Сохранить")
+            Text("Создать")
         }
     }
 }

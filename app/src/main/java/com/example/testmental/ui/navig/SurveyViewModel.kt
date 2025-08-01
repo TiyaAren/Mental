@@ -3,8 +3,8 @@ package com.example.testmental.ui.navig
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.testmental.ui.navig.model.MoodUiModel
 import com.example.testmental.domain.model.MoodEntity
+import com.example.testmental.ui.navig.model.MoodUiModel
 
 class SurveyViewModel : ViewModel() {
     private val _entries = mutableStateListOf<MoodEntity>()

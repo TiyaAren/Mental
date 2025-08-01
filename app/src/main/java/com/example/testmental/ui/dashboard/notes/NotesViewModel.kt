@@ -1,22 +1,35 @@
 package com.example.testmental.ui.dashboard.notes
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.testmental.data.repository.NotesRepository
 import com.example.testmental.ui.navig.model.NoteUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val repository: NotesRepository
 ) : ViewModel() {
+    val notes = repository.notes
 
-    val notes: StateFlow<List<NoteUiModel>> = repository.notes
+    fun getNoteById(id: String) = repository.getNoteById(id)
 
-    fun getNoteById(id: String): NoteUiModel? = repository.getNoteById(id)
+    fun createNote(onCreated: (Int) -> Unit) {
+        viewModelScope.launch {
+            val note = NoteEntity(
+                title = "",
+                content = "",
+                createdAt = System.currentTimeMillis()
+            )
+            val newId = repository.insertNote(note)
+            onCreated(newId.toInt())
+        }
+    }
 
-    fun createNote(): NoteUiModel = repository.addNote()
 
     fun updateNote(note: NoteUiModel) = repository.updateNote(note)
 }

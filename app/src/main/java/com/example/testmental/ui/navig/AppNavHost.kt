@@ -2,21 +2,19 @@ package com.example.testmental.ui.navig
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.example.testmental.ui.dashboard.notes.NoteCreateScreen
 import com.example.testmental.ui.dashboard.notes.NoteEditScreen
 import com.example.testmental.ui.dashboard.notes.NotesScreen
-import com.example.testmental.ui.dashboard.notes.NotesViewModel
 import com.example.testmental.ui.selfcare.activity.ActivitiesScreen
 import com.example.testmental.ui.selfcare.emotion.EmotionScreen
 import com.example.testmental.ui.selfcare.mood.MoodScreen
 
 
 @Composable
-fun AppNavHost() {
-    val navController = rememberNavController()
-
+fun AppNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = "start"
@@ -43,21 +41,16 @@ fun AppNavHost() {
         }
 
         composable("main") {
-            val surveyViewModel: SurveyViewModel = hiltViewModel()
-            MainNavigationScreen()
-            MainNavigationScreen( )
+            MainNavigationScreen(navController)
         }
-        composable("noteUiModels") {
-            NotesScreen(navController)
+
+        composable("note_create") {
+            NoteCreateScreen(navController)
         }
+
         composable("edit_note/{noteId}") { backStackEntry ->
             val noteId = backStackEntry.arguments?.getString("noteId") ?: return@composable
-            val notesViewModel: NotesViewModel = hiltViewModel()
-            NoteEditScreen(
-                noteId = noteId,
-                viewModel = notesViewModel,
-                navController = navController
-            )
+            NoteEditScreen(noteId = noteId, navController = navController)
         }
     }
 }

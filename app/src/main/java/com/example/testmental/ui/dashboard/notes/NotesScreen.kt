@@ -1,5 +1,7 @@
 package com.example.testmental.ui.dashboard.notes
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -12,10 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.testmental.clickable
 import java.util.Date
 
 @Composable
@@ -28,8 +29,7 @@ fun NotesScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                val newNote = viewModel.createNote()
-                navController.navigate("edit_note/${newNote.id}")
+                navController.navigate("note_create")
             }) {
                 Icon(Icons.Default.Add, contentDescription = "Добавить")
             }
@@ -38,11 +38,17 @@ fun NotesScreen(
         LazyColumn(contentPadding = padding) {
             items(notes) { note ->
                 ListItem(
-                    headlineContent = { Text(note.title.ifEmpty { "Без названия" }) },
-                    supportingContent = { Text("Создано: ${Date(note.createdAt)}") },
-                    modifier = Modifier.clickable {
-                        navController.navigate("edit_note/${note.id}")
-                    }
+                    headlineContent = {
+                        Text(note.title.ifEmpty { "Без названия" })
+                    },
+                    supportingContent = {
+                        Text("Создано: ${Date(note.createdAt)}")
+                    },
+                    modifier = androidx.compose.ui.Modifier
+                        .clickable {
+                            navController.navigate("edit_note/${note.id}")
+                        }
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
         }
