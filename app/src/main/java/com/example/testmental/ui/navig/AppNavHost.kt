@@ -1,10 +1,13 @@
 package com.example.testmental.ui.navig
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.testmental.ui.dashboard.notes.NoteCreateScreen
 import com.example.testmental.ui.dashboard.notes.NoteEditScreen
 import com.example.testmental.ui.dashboard.notes.NotesScreen
@@ -41,16 +44,32 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable("main") {
-            MainNavigationScreen(navController)
+            MainNavigationScreen(navController) // передаём главный
         }
 
         composable("note_create") {
             NoteCreateScreen(navController)
         }
+        composable("notes") {
+            // Показываем MainNavigationScreen, когда пользователь на экране с вкладками
+            MainNavigationScreen(navController) // НЕ передаём navController
+        }
 
-        composable("edit_note/{noteId}") { backStackEntry ->
-            val noteId = backStackEntry.arguments?.getString("noteId") ?: return@composable
+
+        composable(
+            route = "edit_note/{noteId}",
+            arguments = listOf(navArgument("noteId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val noteId = backStackEntry.arguments?.getString("noteId")
+            Log.d("TAG", "edit_note screen opened, noteId = $noteId")
+            if (noteId == null) {
+                navController.popBackStack()
+                return@composable
+            }
+
             NoteEditScreen(noteId = noteId, navController = navController)
         }
+
+
     }
 }

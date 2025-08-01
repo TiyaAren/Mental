@@ -1,5 +1,6 @@
 package com.example.testmental.data.repository
 
+import android.util.Log
 import com.example.testmental.ui.navig.model.NoteUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,9 @@ class NotesRepository @Inject constructor() {
             content = content,
             createdAt = System.currentTimeMillis()
         )
-        _notes.value = _notes.value + newNote
+        _notes.value += newNote
+//        println("Note added: $newNote") // для отладки
+        Log.d("TAG", "addNote: $_notes.value ")
         return newNote
     }
 

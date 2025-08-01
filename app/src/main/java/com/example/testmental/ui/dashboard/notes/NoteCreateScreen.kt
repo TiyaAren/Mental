@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.testmental.ui.navig.BottomNavScreen
 
 @Composable
 fun NoteCreateScreen(
@@ -24,6 +25,7 @@ fun NoteCreateScreen(
 ) {
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
+//    val note = viewModel.getNoteById(noteId)
 
     Column(modifier = Modifier.padding(16.dp)) {
         OutlinedTextField(
@@ -40,9 +42,13 @@ fun NoteCreateScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
             val newNote = viewModel.createNote(title, content)
-            navController.navigate("edit_note/${newNote.id}")
+            navController.navigate("notes") {
+                popUpTo("note_create") { inclusive = true }
+            }
+
         }) {
             Text("Создать")
         }
+
     }
 }

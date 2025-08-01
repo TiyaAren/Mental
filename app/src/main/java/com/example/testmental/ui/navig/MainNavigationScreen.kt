@@ -70,10 +70,40 @@ fun BottomBar(navController: NavController) {
     }
 }
 
-// Главный экран с навигацией и нижним баром
+//// Главный экран с навигацией и нижним баром
+//@Composable
+//fun MainNavigationScreen(mainNavController: NavHostController) {
+//    val bottomNavController = rememberNavController() // свой NavController для нижней навигации
+//
+//    Scaffold(
+//        bottomBar = { BottomBar(bottomNavController) }
+//    ) { paddingValues ->
+//        NavHost(
+//            navController = bottomNavController,
+//            startDestination = BottomNavScreen.Home.route,
+//            modifier = Modifier.padding(paddingValues)
+//        ) {
+//            composable(BottomNavScreen.Home.route) {
+//                HomeScreen()
+//            }
+//            composable(BottomNavScreen.Calendar.route) {
+//                CalendarScreen(bottomNavController)
+//            }
+//            composable(BottomNavScreen.Notes.route) {
+//                // Ключевой момент: в экран заметок передаём **главный navController**
+//                NotesScreen(navController = mainNavController)
+//            }
+//            composable(BottomNavScreen.Profile.route) {
+//                ProfileScreen()
+//            }
+//        }
+//    }
+//}
+//
+//
 @Composable
 fun MainNavigationScreen(mainNavController: NavHostController) {
-    val bottomNavController = rememberNavController() // свой NavController для нижней навигации
+    val bottomNavController = rememberNavController()
 
     Scaffold(
         bottomBar = { BottomBar(bottomNavController) }
@@ -90,7 +120,7 @@ fun MainNavigationScreen(mainNavController: NavHostController) {
                 CalendarScreen(bottomNavController)
             }
             composable(BottomNavScreen.Notes.route) {
-                // Ключевой момент: в экран заметок передаём **главный navController**
+                // 👇 передаём главный navController
                 NotesScreen(navController = mainNavController)
             }
             composable(BottomNavScreen.Profile.route) {
@@ -99,5 +129,4 @@ fun MainNavigationScreen(mainNavController: NavHostController) {
         }
     }
 }
-
 

@@ -1,5 +1,6 @@
 package com.example.testmental.ui.dashboard.notes
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -24,6 +25,7 @@ fun NoteEditScreen(
     viewModel: NotesViewModel = hiltViewModel()
 ) {
     val note = viewModel.getNoteById(noteId)
+    Log.d("TAG", "NoteEditScreen: $note ")
     if (note == null) {
         Text("Заметка не найдена")
         return
@@ -47,7 +49,10 @@ fun NoteEditScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
             viewModel.updateNote(note.copy(title = title, content = content))
-            navController.popBackStack()
+            navController.navigate("edit_note") {
+                popUpTo("edit_note/${note.id}") { inclusive = true }
+            }
+
         }) {
             Text("Сохранить")
         }
