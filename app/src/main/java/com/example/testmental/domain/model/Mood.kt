@@ -2,7 +2,7 @@ package com.example.testmental.domain.model
 
 import android.util.Log
 
-data class MoodEntity(
+data class Mood(
     val date: String,
     val mood: String,
     val emotions: List<String>,

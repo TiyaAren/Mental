@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.testmental.ui.navig.BottomNavScreen
 
 @Composable
 fun NoteCreateScreen(
@@ -41,7 +40,7 @@ fun NoteCreateScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            val newNote = viewModel.createNote(title, content)
+            val newNote = viewModel.addNote(title, content)
             navController.navigate("notes") {
                 popUpTo("note_create") { inclusive = true }
             }

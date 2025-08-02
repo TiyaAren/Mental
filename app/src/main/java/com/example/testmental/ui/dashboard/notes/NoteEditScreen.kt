@@ -1,6 +1,5 @@
 package com.example.testmental.ui.dashboard.notes
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,12 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.testmental.ui.navig.model.NoteUiModel
 
 @Composable
 fun NoteEditScreen(
@@ -24,15 +25,17 @@ fun NoteEditScreen(
     navController: NavController,
     viewModel: NotesViewModel = hiltViewModel()
 ) {
-    val note = viewModel.getNoteById(noteId)
-    Log.d("TAG", "NoteEditScreen: $note ")
+    val note by produceState<NoteUiModel?>(initialValue = null, noteId) {
+        value = viewModel.getNoteById(noteId)
+    }
+
     if (note == null) {
         Text("Заметка не найдена")
         return
     }
 
-    var title by remember { mutableStateOf(note.title) }
-    var content by remember { mutableStateOf(note.content) }
+    var title by remember { mutableStateOf(note!!.title) }
+    var content by remember { mutableStateOf(note!!.content) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         OutlinedTextField(
@@ -48,11 +51,10 @@ fun NoteEditScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            viewModel.updateNote(note.copy(title = title, content = content))
+            viewModel.updateNote(note!!.copy(title = title, content = content))
             navController.navigate("edit_note") {
-                popUpTo("edit_note/${note.id}") { inclusive = true }
+                popUpTo("edit_note/${noteId}") { inclusive = true }
             }
-
         }) {
             Text("Сохранить")
         }

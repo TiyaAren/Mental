@@ -1,4 +1,4 @@
-package com.example.testmental.domain.model
+package com.example.testmental.data.model
 
 
 import androidx.room.Entity

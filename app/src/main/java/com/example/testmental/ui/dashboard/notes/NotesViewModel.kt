@@ -1,9 +1,18 @@
 package com.example.testmental.ui.dashboard.notes
 
 import androidx.lifecycle.ViewModel
-import com.example.testmental.data.repository.NotesRepository
+import androidx.lifecycle.viewModelScope
+import com.example.testmental.data.mapper.toDomainModel
+import com.example.testmental.data.mapper.toUiModel
+import com.example.testmental.domain.model.Note
+import com.example.testmental.domain.repository.NotesRepository
 import com.example.testmental.ui.navig.model.NoteUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -11,13 +20,30 @@ class NotesViewModel @Inject constructor(
     private val repository: NotesRepository
 ) : ViewModel() {
 
-    val notes = repository.notes
+    // Преобразуем Note → NoteUiModel
+    val notes = repository.getNotes()
+        .map { list -> list.map { it.toUiModel() } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun getNoteById(id: String) = repository.getNoteById(id)
-
-    fun createNote(title: String, content: String): NoteUiModel {
-        return repository.addNote(title, content)
+    fun getNoteById(id: String): NoteUiModel? {
+        return notes.value.find { it.id == id }
     }
 
-    fun updateNote(note: NoteUiModel) = repository.updateNote(note)
+    fun addNote(title: String, content: String) {
+        val note = Note(
+            id = UUID.randomUUID().toString(),
+            title = title,
+            content = content,
+            createdAt = System.currentTimeMillis()
+        )
+        viewModelScope.launch {
+            repository.addNote(note)
+        }
+    }
+
+    fun updateNote(note: NoteUiModel) {
+        viewModelScope.launch {
+            repository.updateNote(note.toDomainModel())
+        }
+    }
 }

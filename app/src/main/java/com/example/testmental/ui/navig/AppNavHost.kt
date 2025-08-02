@@ -10,7 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.testmental.ui.dashboard.notes.NoteCreateScreen
 import com.example.testmental.ui.dashboard.notes.NoteEditScreen
-import com.example.testmental.ui.dashboard.notes.NotesScreen
 import com.example.testmental.ui.selfcare.activity.ActivitiesScreen
 import com.example.testmental.ui.selfcare.emotion.EmotionScreen
 import com.example.testmental.ui.selfcare.mood.MoodScreen
@@ -51,8 +50,7 @@ fun AppNavHost(navController: NavHostController) {
             NoteCreateScreen(navController)
         }
         composable("notes") {
-            // Показываем MainNavigationScreen, когда пользователь на экране с вкладками
-            MainNavigationScreen(navController) // НЕ передаём navController
+            MainNavigationScreen(navController)
         }
 
 

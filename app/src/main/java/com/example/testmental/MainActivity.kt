@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.testmental.ui.navig.AppNavHost
-import com.example.testmental.ui.navig.MainNavigationScreen
 import com.example.testmental.ui.theme.TestMentalTheme
 import dagger.hilt.android.AndroidEntryPoint
 
