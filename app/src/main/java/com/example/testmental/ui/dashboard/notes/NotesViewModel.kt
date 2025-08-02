@@ -20,7 +20,6 @@ class NotesViewModel @Inject constructor(
     private val repository: NotesRepository
 ) : ViewModel() {
 
-    // Преобразуем Note → NoteUiModel
     val notes = repository.getNotes()
         .map { list -> list.map { it.toUiModel() } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
