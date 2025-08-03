@@ -28,13 +28,8 @@ class NotesViewModel @Inject constructor(
         return notes.value.find { it.id == id }
     }
 
-    fun addNote(title: String, content: String) {
-        val note = Note(
-            id = UUID.randomUUID().toString(),
-            title = title,
-            content = content,
-            date = System.currentTimeMillis().toString()
-        )
+    fun addNote(note: Note) {
+
         viewModelScope.launch {
             repository.addNote(note)
         }
