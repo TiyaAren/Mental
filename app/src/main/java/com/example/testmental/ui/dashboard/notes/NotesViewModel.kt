@@ -20,7 +20,7 @@ class NotesViewModel @Inject constructor(
     private val repository: NotesRepository
 ) : ViewModel() {
 
-    val notes = repository.getNotes()
+    val notes = repository.getAllNotes()
         .map { list -> list.map { it.toUiModel() } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
@@ -33,7 +33,7 @@ class NotesViewModel @Inject constructor(
             id = UUID.randomUUID().toString(),
             title = title,
             content = content,
-            createdAt = System.currentTimeMillis()
+            date = System.currentTimeMillis().toString()
         )
         viewModelScope.launch {
             repository.addNote(note)

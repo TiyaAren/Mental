@@ -8,6 +8,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -19,23 +21,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.testmental.ui.navig.model.NoteUiModel
 
+
 @Composable
 fun NoteEditScreen(
     noteId: String,
     navController: NavController,
     viewModel: NotesViewModel = hiltViewModel()
 ) {
-    val note by produceState<NoteUiModel?>(initialValue = null, noteId) {
-        value = viewModel.getNoteById(noteId)
-    }
+    val notes by viewModel.notes.collectAsState()
+
+    val note = notes.find { it.id == noteId }
 
     if (note == null) {
         Text("Заметка не найдена")
         return
     }
 
-    var title by remember { mutableStateOf(note!!.title) }
-    var content by remember { mutableStateOf(note!!.content) }
+    var title by remember(note.id) { mutableStateOf(note.title) }
+    var content by remember(note.id) { mutableStateOf(note.content) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         OutlinedTextField(
@@ -51,9 +54,9 @@ fun NoteEditScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            viewModel.updateNote(note!!.copy(title = title, content = content))
-            navController.navigate("edit_note") {
-                popUpTo("edit_note/${noteId}") { inclusive = true }
+            if (title != note.title || content != note.content) {
+                viewModel.updateNote(note.copy(title = title, content = content))
+                navController.popBackStack()
             }
         }) {
             Text("Сохранить")

@@ -13,7 +13,7 @@ class CreateNoteUseCase(
             id = UUID.randomUUID().toString(),
             title = title,
             content = content,
-            createdAt = System.currentTimeMillis()
+            date = System.currentTimeMillis().toString()
         )
         repository.addNote(newNote)
         return newNote
