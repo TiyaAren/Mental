@@ -22,7 +22,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "notes_database"
+            "notes_database.db"
         ).build()
     }
 

@@ -43,7 +43,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable("main") {
-            MainNavigationScreen(navController) // передаём главный
+            MainNavigationScreen(navController)
         }
 
         composable("note_create") {

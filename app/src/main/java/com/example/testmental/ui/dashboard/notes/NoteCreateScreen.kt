@@ -1,5 +1,6 @@
 package com.example.testmental.ui.dashboard.notes
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -24,7 +25,6 @@ fun NoteCreateScreen(
 ) {
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
-//    val note = viewModel.getNoteById(noteId)
 
     Column(modifier = Modifier.padding(16.dp)) {
         OutlinedTextField(
@@ -40,11 +40,13 @@ fun NoteCreateScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            val newNote = viewModel.addNote(title, content)
-            navController.navigate("notes") {
-                popUpTo("note_create") { inclusive = true }
-            }
 
+            val newNote = viewModel.addNote(title, content)
+            Log.d("TAG", "NoteCreateScreen: $newNote")
+//            navController.navigate("notes") {
+//                popUpTo("note_create") { inclusive = true }
+//            }
+            navController.popBackStack()
         }) {
             Text("Создать")
         }
