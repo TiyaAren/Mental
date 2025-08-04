@@ -3,12 +3,12 @@ package com.example.testmental.ui.navig
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.testmental.domain.model.Mood
+import com.example.testmental.domain.model.SelfCare
 import com.example.testmental.ui.navig.model.MoodUiModel
 
 class SurveyViewModel : ViewModel() {
-    private val _entries = mutableStateListOf<Mood>()
-    val entries: List<Mood> get() = _entries
+    private val _entries = mutableStateListOf<SelfCare>()
+    val entries: List<SelfCare> get() = _entries
 
     private val _selectedMoodUiModel = mutableStateOf<MoodUiModel?>(null)
     val selectedMoodUiModel: MoodUiModel? get() = _selectedMoodUiModel.value
@@ -39,7 +39,7 @@ class SurveyViewModel : ViewModel() {
 //        _selectedActivities.clear()
 //    }
 //    fun saveCurrentEntry() {
-//        val entry = Mood(
+//        val entry = SelfCare(
 //            mood = _selectedMood.value,
 //            emotions = _selectedEmotions.toList(),
 //            activities = _selectedActivities.toList()

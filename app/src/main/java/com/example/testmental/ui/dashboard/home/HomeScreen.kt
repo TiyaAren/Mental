@@ -23,14 +23,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
+
 @Composable
 fun HomeScreen() {
+    val currentDate = LocalDate.now()
+    val month = currentDate.month.getDisplayName(TextStyle.FULL, Locale("ru"))
+    val year = currentDate.year
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5F5F5)) // светло-серый фон
+            .background(Color(0xFFF5F5F5))
     ) {
-        // Заголовок с месяцем и стрелками
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -40,7 +47,7 @@ fun HomeScreen() {
         ) {
             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
             Text(
-                text = "Июнь 2025",
+                text = "$month $year".replaceFirstChar { it.uppercase() },
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -50,13 +57,10 @@ fun HomeScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-//        LazyColumn(modifier = Modifier.fillMaxSize()) {
-//            items(historyItems) { item ->
-//                MoodHistoryItem(item)
-//            }
-//        }
+        // TODO: Здесь можно добавить список истории или другой контент
     }
 }
+
 
 // Данные одной записи истории
 //@Composable

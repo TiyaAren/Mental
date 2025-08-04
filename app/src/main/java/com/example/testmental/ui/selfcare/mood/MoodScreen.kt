@@ -105,7 +105,7 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, sel
         ) {
 
             Column(verticalArrangement = Arrangement.Bottom) {
-                Text(text = "Выбранная дата: $dateToDisplay")
+                Text(text = "Дата: $dateToDisplay")
 
                 Text(
                     text = "Добрый день!",

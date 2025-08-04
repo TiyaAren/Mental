@@ -1,10 +1,10 @@
 package com.example.testmental.data.di
 
-
 import android.content.Context
 import androidx.room.Room
 import com.example.testmental.data.local.AppDatabase
 import com.example.testmental.data.local.NoteDao
+import com.example.testmental.data.local.SelfCareDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,12 +22,13 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "notes_database.db"
+            "app_database"
         ).build()
     }
 
     @Provides
-    fun provideNoteDao(database: AppDatabase): NoteDao {
-        return database.noteDao()
-    }
+    fun provideNoteDao(db: AppDatabase): NoteDao = db.noteDao()
+
+    @Provides
+    fun provideSelfCareDao(db: AppDatabase): SelfCareDao = db.selfCareDao()
 }
