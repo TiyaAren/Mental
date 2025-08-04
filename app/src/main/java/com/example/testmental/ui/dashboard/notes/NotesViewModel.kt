@@ -40,4 +40,12 @@ class NotesViewModel @Inject constructor(
             repository.updateNote(note.toDomainModel())
         }
     }
+    fun deleteNotes(noteIds: List<String>) {
+        viewModelScope.launch {
+            repository.deleteNotesByIds(noteIds)
+            // loadNotes() не нужен, т.к. notes — это Flow и сам обновится
+        }
+    }
+
+
 }
