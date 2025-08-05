@@ -1,5 +1,6 @@
 package com.example.testmental.ui.selfcare.mood
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -56,7 +57,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, selectedDate: String? = null) {
+fun MoodScreen(navController: NavController, viewModel: SurveyViewModel, selectedDate: String? = null) {
     val moodUiModels = listOf(
         MoodUiModel("Отлично", Icons.Default.SentimentVerySatisfied, color = ColorMoodExcellent),
         MoodUiModel("Хорошо", Icons.Default.SentimentSatisfied, color = ColorMoodGood),
@@ -138,11 +139,11 @@ fun MoodScreen(navController: NavController, moodViewModel: SurveyViewModel, sel
         }
         Button(
             onClick = {
-                selectedItem.value?.let { label ->
-                    val mood = moodUiModels.find { it.label == label }
-                    mood?.let { moodViewModel.selectMood(it) }
+                selectedItem.value?.let {
+                    viewModel.setMood(it)
+                    Log.d("TAG", "MoodScreen:$it ")
+                    navController.navigate("emotion")
                 }
-                navController.navigate("emotion")
             },
             enabled = selectedItem.value != null,
             modifier = Modifier

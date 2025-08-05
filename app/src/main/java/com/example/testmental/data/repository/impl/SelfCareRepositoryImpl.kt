@@ -1,5 +1,7 @@
 package com.example.testmental.data.repository.impl
 
+
+import android.util.Log
 import com.example.testmental.data.local.SelfCareDao
 import com.example.testmental.data.mapper.toDomain
 import com.example.testmental.data.mapper.toEntity
@@ -14,15 +16,21 @@ class SelfCareRepositoryImpl @Inject constructor(
 ) : SelfCareRepository {
 
     override suspend fun saveSelfCare(selfCare: SelfCare) {
+        Log.d("SelfCareRepositoryImpl", "Saving: $selfCare")
         dao.insert(selfCare.toEntity())
     }
 
     override suspend fun getSelfCareByDate(date: String): SelfCare? {
-        return dao.getByDate(date)?.toDomain()
+        val entity = dao.getByDate(date)
+        return entity?.toDomain()
     }
 
     override fun getAllSelfCare(): Flow<List<SelfCare>> {
-        return dao.getAll().map { list -> list.map { it.toDomain() } }
+        return dao.getAll().map { list ->
+            val mapped = list.map { it.toDomain() }
+            Log.d("SelfCareRepositoryImpl", "Loaded from DB: $mapped")
+            mapped
+        }
     }
 
     override suspend fun deleteSelfCare(id: String) {

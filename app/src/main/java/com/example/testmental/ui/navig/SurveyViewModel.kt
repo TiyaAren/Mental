@@ -1,52 +1,72 @@
 package com.example.testmental.ui.navig
 
+
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.testmental.domain.model.SelfCare
-import com.example.testmental.ui.navig.model.MoodUiModel
+import com.example.testmental.domain.repository.SelfCareRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import javax.inject.Inject
 
-class SurveyViewModel : ViewModel() {
-    private val _entries = mutableStateListOf<SelfCare>()
-    val entries: List<SelfCare> get() = _entries
+@HiltViewModel
+class SurveyViewModel @Inject constructor(
+    private val selfCareRepository: SelfCareRepository
+) : ViewModel() {
 
-    private val _selectedMoodUiModel = mutableStateOf<MoodUiModel?>(null)
-    val selectedMoodUiModel: MoodUiModel? get() = _selectedMoodUiModel.value
+    private val _mood = mutableStateOf<String?>(null)
+    val mood: String? get() = _mood.value
 
-    private val _selectedEmotions = mutableStateListOf<String>()
-    val selectedEmotions: List<String> get() = _selectedEmotions
+    private val _emotions = mutableStateListOf<String>()
+    val emotions: List<String> get() = _emotions
 
-    private val _selectedActivities = mutableStateListOf<String>()
-    val selectedActivities: List<String> get() = _selectedActivities
+    private val _activities = mutableStateListOf<String>()
+    val activities: List<String> get() = _activities
 
-    fun selectMood(moodUiModel: MoodUiModel) {
-        _selectedMoodUiModel.value = moodUiModel
+    fun setMood(moodLabel: String) {
+        _mood.value = moodLabel
+        Log.d("SurveyViewModel", "Mood set: $moodLabel")
     }
 
-    fun toggleEmotion(emotion: String) {
-        if (_selectedEmotions.contains(emotion)) _selectedEmotions.remove(emotion)
-        else _selectedEmotions.add(emotion)
+    fun setEmotions(selected: List<String>) {
+        _emotions.clear()
+        _emotions.addAll(selected)
+        Log.d("SurveyViewModel", "Emotions set: $selected")
     }
 
-    fun toggleActivity(activity: String) {
-        if (_selectedActivities.contains(activity)) _selectedActivities.remove(activity)
-        else _selectedActivities.add(activity)
+    fun setActivities(selected: List<String>) {
+        _activities.clear()
+        _activities.addAll(selected)
+        Log.d("SurveyViewModel", "Activities set: $selected")
+    }
+
+    fun saveSelfCareToDb() {
+        val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val currentMood = _mood.value
+
+        if (currentMood.isNullOrEmpty()) {
+            Log.d("SurveyViewModel", "Mood is null, skipping save")
+            return
+        }
+
+        val selfCare = SelfCare(
+            id = UUID.randomUUID().toString(),
+            date = currentDate,
+            mood = currentMood,
+            emotions = emotions,
+            activities = activities
+        )
+
+        Log.d("SurveyViewModel", "Saving to DB: $selfCare")
+
+        viewModelScope.launch {
+            selfCareRepository.saveSelfCare(selfCare)
+        }
     }
 }
-//    fun resetAll() {
-//        _selectedMood.value = null
-//        _selectedEmotions.clear()
-//        _selectedActivities.clear()
-//    }
-//    fun saveCurrentEntry() {
-//        val entry = SelfCare(
-//            mood = _selectedMood.value,
-//            emotions = _selectedEmotions.toList(),
-//            activities = _selectedActivities.toList()
-//        )
-//        _entries.add(entry)
-//        resetAll()
-//    }
-//
-//}
-

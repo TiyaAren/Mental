@@ -2,12 +2,14 @@ package com.example.testmental.ui.navig
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.example.testmental.ui.dashboard.notes.NoteCreateScreen
 import com.example.testmental.ui.dashboard.notes.NoteEditScreen
 import com.example.testmental.ui.selfcare.activity.ActivitiesScreen
@@ -22,25 +24,43 @@ fun AppNavHost(navController: NavHostController) {
         startDestination = "start"
     ) {
         composable("start") {
-            val surveyViewModel: SurveyViewModel = hiltViewModel()
             StartSurveyScreen(navController)
         }
 
-        composable("mood/{date}") { backStackEntry ->
-            val surveyViewModel: SurveyViewModel = hiltViewModel()
-            val date = backStackEntry.arguments?.getString("date")
-            MoodScreen(navController, surveyViewModel, date)
+        // 🔽 Вложенный граф с общим SurveyViewModel
+        navigation(
+            route = "selfcare_graph",
+            startDestination = "mood/{date}"
+        ) {
+            composable(
+                route = "mood/{date}",
+                arguments = listOf(navArgument("date") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("selfcare_graph")
+                }
+                val date = backStackEntry.arguments?.getString("date")
+                val viewModel: SurveyViewModel = hiltViewModel(parentEntry)
+                MoodScreen(navController, viewModel, date)
+            }
+
+            composable("emotion") { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("selfcare_graph")
+                }
+                val viewModel: SurveyViewModel = hiltViewModel(parentEntry)
+                EmotionScreen(navController, viewModel)
+            }
+
+            composable("activity") { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("selfcare_graph")
+                }
+                val viewModel: SurveyViewModel = hiltViewModel(parentEntry)
+                ActivitiesScreen(navController, viewModel)
+            }
         }
 
-        composable("emotion") {
-            val surveyViewModel: SurveyViewModel = hiltViewModel()
-            EmotionScreen(navController, surveyViewModel)
-        }
-
-        composable("activity") {
-            val surveyViewModel: SurveyViewModel = hiltViewModel()
-            ActivitiesScreen(navController, surveyViewModel)
-        }
 
         composable("main") {
             MainNavigationScreen(navController)
@@ -49,10 +69,10 @@ fun AppNavHost(navController: NavHostController) {
         composable("note_create") {
             NoteCreateScreen(navController)
         }
+
         composable("notes") {
             MainNavigationScreen(navController)
         }
-
 
         composable(
             route = "edit_note/{noteId}",
@@ -64,10 +84,7 @@ fun AppNavHost(navController: NavHostController) {
                 navController.popBackStack()
                 return@composable
             }
-
             NoteEditScreen(noteId = noteId, navController = navController)
         }
-
-
     }
 }

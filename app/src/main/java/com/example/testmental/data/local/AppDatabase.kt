@@ -7,7 +7,7 @@ import com.example.testmental.data.model.NoteEntity
 import com.example.testmental.data.model.SelfCareEntity
 import com.example.testmental.data.remote.Converters
 
-@Database(entities = [NoteEntity::class, SelfCareEntity::class], version = 1, exportSchema = false)
+@Database(entities = [NoteEntity::class, SelfCareEntity::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
