@@ -1,5 +1,6 @@
 package com.example.testmental.ui.selfcare.emotion
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,7 +42,9 @@ import com.example.testmental.ui.theme.ColorTextSecondaryVariant
 import com.example.testmental.ui.theme.ColorWindForecast
 
 @Composable
-fun EmotionScreen(navController: NavController, moodViewModel: SurveyViewModel) {
+fun EmotionScreen(navController: NavController, viewModel: SurveyViewModel) {
+
+
     val emotions = listOf(
         "Восторг",
         "Радость",
@@ -182,7 +185,8 @@ fun EmotionScreen(navController: NavController, moodViewModel: SurveyViewModel) 
         Button(
 
             onClick = {
-
+                viewModel.setEmotions(selectedEmotions)
+                Log.d("TAG", "EmotionScreen: $selectedEmotions")
                 navController.navigate("activity")
             },
             enabled = selectedEmotions.isNotEmpty(),

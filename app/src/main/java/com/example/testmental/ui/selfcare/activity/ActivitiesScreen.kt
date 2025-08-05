@@ -1,5 +1,6 @@
 package com.example.testmental.ui.selfcare.activity
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -53,7 +54,12 @@ import com.example.testmental.ui.theme.ColorWindForecast
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
-fun ActivitiesScreen(navController: NavController, moodViewModel: SurveyViewModel) {
+fun ActivitiesScreen(
+    navController: NavController,
+    viewModel: SurveyViewModel
+    ) {
+
+
     val activities = listOf(
         ActivityItem("Семья", Icons.Default.Home),
         ActivityItem("Работа", Icons.Default.Work), // Новая иконка
@@ -86,9 +92,11 @@ fun ActivitiesScreen(navController: NavController, moodViewModel: SurveyViewMode
             modifier = Modifier.padding(top = 16.dp)
         ) {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon( imageVector = Icons.Default.ChevronLeft,
+                Icon(
+                    imageVector = Icons.Default.ChevronLeft,
                     contentDescription = "Назад",
-                    modifier = Modifier.size(28.dp))
+                    modifier = Modifier.size(28.dp)
+                )
             }
             Text(
                 text = "Ваши отметки занятий",
@@ -165,16 +173,20 @@ fun ActivitiesScreen(navController: NavController, moodViewModel: SurveyViewMode
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
+            enabled = selectedItems.isNotEmpty(),
             onClick = {
+                viewModel.setActivities(selectedItems)
+                Log.d("TAG", "ActivitiesScreen: $selectedItems")
+                viewModel.saveSelfCareToDb()
                 navController.navigate("main")
             },
-            enabled = selectedItems.isNotEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
         ) {
             Text("Подвести итог")
         }
+
     }
 }
 

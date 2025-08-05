@@ -49,6 +49,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.gson)
+
     // Room
     implementation(libs.room.runtime)
     kapt(libs.androidx.room.compiler)
