@@ -10,6 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.testmental.ui.auth.SignInScreen
+import com.example.testmental.ui.auth.SignUpScreen
 import com.example.testmental.ui.dashboard.notes.NoteCreateScreen
 import com.example.testmental.ui.dashboard.notes.NoteEditScreen
 import com.example.testmental.ui.selfcare.activity.ActivitiesScreen
@@ -21,10 +23,18 @@ import com.example.testmental.ui.selfcare.mood.MoodScreen
 fun AppNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "start"
+        startDestination = "signUp"
+//        startDestination = "start"
     ) {
         composable("start") {
             StartSurveyScreen(navController)
+        }
+
+        composable("signUp") {
+            SignUpScreen(navController)
+        }
+        composable("signIn") {
+            SignInScreen(navController)
         }
 
         // 🔽 Вложенный граф с общим SurveyViewModel
@@ -60,7 +70,6 @@ fun AppNavHost(navController: NavHostController) {
                 ActivitiesScreen(navController, viewModel)
             }
         }
-
 
         composable("main") {
             MainNavigationScreen(navController)

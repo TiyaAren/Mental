@@ -41,14 +41,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavController) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
-    var agreeToTerms by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -60,7 +60,7 @@ fun SignUpScreen() {
         // Emoji icon placeholder
         Box(
             modifier = Modifier
-                .size(64.dp)
+//                .size(64.dp)
                 .background(Color(0xFFEFEFFF), RoundedCornerShape(20.dp)),
             contentAlignment = Alignment.Center
         ) {
@@ -78,33 +78,9 @@ fun SignUpScreen() {
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Button(
-                onClick = {},
-                modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEFEFFF)) // Пример синего
 
 
-            ) {
-                Text("Facebook", color = Color.Black)
-            }
-            Button(
-                onClick = {},
-                modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEFEFFF)) // Пример синего
-
-            ) {
-                Text("Google", color = Color.Black)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("Or", color = Color.Gray)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         TextField(
             value = name,
@@ -169,33 +145,32 @@ fun SignUpScreen() {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(
-                checked = agreeToTerms,
-                onCheckedChange = { agreeToTerms = it }
-            )
-            Text("I'm agree to The ", fontSize = 12.sp)
-            Text("Tarms of Service", fontSize = 12.sp, color = Color.Blue)
-            Text(" and ", fontSize = 12.sp)
-            Text("Privasy Policy", fontSize = 12.sp, color = Color.Blue)
-        }
 
         Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {},
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(12.dp)
+                .height(56.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3366FF))
         ) {
-            Text("Creat Account")
+            Text("Create Account", color = Color.White, fontSize = 16.sp)
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row {
-            Text("Do you have account? ")
-            Text("Sign In", color = Color.Blue, modifier = Modifier.clickable { })
+            Text("Do you have account? ", color = Color.Gray)
+            Text(
+                "Sign In",
+                color = Color(0xFF3366FF),
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clickable {
+                    navController.navigate("signIn")
+                })
         }
+
     }
 }

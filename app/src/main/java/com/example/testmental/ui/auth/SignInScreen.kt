@@ -41,37 +41,43 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.testmental.R
+import com.example.testmental.clickable
 
 @Composable
-fun SignInScreen() {
+fun SignInScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp)
-        ,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(40.dp))
+//        Spacer(modifier = Modifier.height(40.dp))
 
         // Emoji icon with rounded background
         Box(
             modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xFFEAEFFF)),
+//                .size(64.dp)
+                .background(Color(0xFFEFEFFF), RoundedCornerShape(20.dp)),
             contentAlignment = Alignment.Center
         ) {
-            Text("\uD83D\uDC4B", fontSize = 32.sp)
+            Text(text = "👏", fontSize = 28.sp)
         }
+
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Sign In", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1E1E1E))
+        Text(
+            "Sign In",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1E1E1E)
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -84,21 +90,7 @@ fun SignInScreen() {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-//            SocialButton("Facebook", R.drawable.ic_facebook)
-            SocialButton("Google", R.drawable.ic_google)
-            SocialButton("Google", R.drawable.ic_google)
-        }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            HorizontalDivider(modifier = Modifier.weight(1f), thickness = 1.dp)
-            Text(" Or ", color = Color.Gray, fontSize = 14.sp)
-            HorizontalDivider(modifier = Modifier.weight(1f), thickness = 1.dp)
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
 
         TextField(
             value = email,
@@ -171,7 +163,13 @@ fun SignInScreen() {
 
         Row {
             Text("Don’t have account? ", color = Color.Gray)
-            Text("Sign Up", color = Color(0xFF3366FF), fontWeight = FontWeight.SemiBold)
+            Text(
+                "Sign Up",
+                color = Color(0xFF3366FF),
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clickable {
+                    navController.navigate("signUp")
+                })
         }
     }
 }
@@ -181,13 +179,16 @@ fun SocialButton(text: String, iconRes: Int) {
     OutlinedButton(
         onClick = { },
         modifier = Modifier
-//            .weight(1f)
             .height(48.dp),
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFF5F5F5))
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(painter = painterResource(id = iconRes), contentDescription = null, modifier = Modifier.size(18.dp))
+            Icon(
+                painter = painterResource(id = iconRes),
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Text(text, fontSize = 14.sp)
         }
