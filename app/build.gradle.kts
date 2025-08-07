@@ -49,8 +49,11 @@ android {
 }
 
 dependencies {
+    implementation(libs.kotlinx.coroutines.android)
+    // build.gradle (Module)
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.gson)
-
     // Room
     implementation(libs.room.runtime)
     kapt(libs.androidx.room.compiler)

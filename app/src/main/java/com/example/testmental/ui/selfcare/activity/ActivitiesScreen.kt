@@ -58,8 +58,6 @@ fun ActivitiesScreen(
     navController: NavController,
     viewModel: SurveyViewModel
     ) {
-
-
     val activities = listOf(
         ActivityItem("Семья", Icons.Default.Home),
         ActivityItem("Работа", Icons.Default.Work), // Новая иконка

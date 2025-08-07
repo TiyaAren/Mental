@@ -1,4 +1,4 @@
-package com.example.testmental.data.remote
+package com.example.testmental.data
 
 
 import androidx.room.TypeConverter

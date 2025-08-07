@@ -10,8 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.testmental.ui.auth.SignInScreen
-import com.example.testmental.ui.auth.SignUpScreen
+import com.example.testmental.ui.auth.log.SignInScreen
+import com.example.testmental.ui.auth.reg.SignUpScreen
 import com.example.testmental.ui.dashboard.notes.NoteCreateScreen
 import com.example.testmental.ui.dashboard.notes.NoteEditScreen
 import com.example.testmental.ui.selfcare.activity.ActivitiesScreen

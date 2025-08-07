@@ -77,10 +77,8 @@ fun MoodScreen(navController: NavController, viewModel: SurveyViewModel, selecte
             .fillMaxSize()
             .padding(24.dp)
             .verticalScroll(rememberScrollState())
-
     ) {
         Row(
-
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = {  navController.navigate("main")}) {

@@ -1,6 +1,7 @@
-package com.example.testmental.ui.auth
+package com.example.testmental.ui.auth.reg
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,18 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -32,24 +30,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.testmental.R
-import com.example.testmental.clickable
 
 @Composable
-fun SignInScreen(navController: NavController) {
+fun SignUpScreen(navController: NavController) {
+    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,9 +55,7 @@ fun SignInScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-//        Spacer(modifier = Modifier.height(40.dp))
-
-        // Emoji icon with rounded background
+        // Emoji icon placeholder
         Box(
             modifier = Modifier
 //                .size(64.dp)
@@ -69,33 +65,25 @@ fun SignInScreen(navController: NavController) {
             Text(text = "👏", fontSize = 28.sp)
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            "Sign In",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF1E1E1E)
-        )
-
+        Text("Sign Up", fontSize = 26.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
-
         Text(
-            text = "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum.",
+            "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum.",
             textAlign = TextAlign.Center,
-            fontSize = 14.sp,
-            color = Color.Gray
+            style = TextStyle(fontSize = 14.sp, color = Color.Gray),
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
 
 
+        Spacer(modifier = Modifier.height(50.dp))
 
         TextField(
-            value = email,
-            onValueChange = { email = it },
-            placeholder = { Text("Email") },
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             colors = TextFieldDefaults.colors(
@@ -108,89 +96,79 @@ fun SignInScreen(navController: NavController) {
             )
 
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
+        Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = password,
-            onValueChange = { password = it },
-            placeholder = { Text("Password") },
-            singleLine = true,
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email/Phone Number") },
+            modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Default.Visibility
-                else
-                    Icons.Default.VisibilityOff
-
-                // Иконка-глаз, при нажатии меняет видимость пароля
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(imageVector = image, contentDescription = null)
-                }
-            },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color(0xFFF1F1F1),
                 unfocusedContainerColor = Color(0xFFF1F1F1),
                 disabledContainerColor = Color(0xFFF1F1F1),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
+
+            )
+
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color(0xFFF1F1F1),
+                unfocusedContainerColor = Color(0xFFF1F1F1),
+                disabledContainerColor = Color(0xFFF1F1F1),
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+
             ),
-            modifier = Modifier.fillMaxWidth()
+
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (isPasswordVisible)
+                    Icons.Default.Visibility
+                else Icons.Default.VisibilityOff
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    Icon(imageVector = image, contentDescription = null)
+                }
+            },
+
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            Text("Forgot Password?", fontSize = 12.sp, color = Color.Gray)
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { },
+            onClick = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3366FF))
         ) {
-            Text("Log In", color = Color.White, fontSize = 16.sp)
+            Text("Create Account", color = Color.White, fontSize = 16.sp)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row {
-            Text("Don’t have account? ", color = Color.Gray)
+            Text("Do you have account? ", color = Color.Gray)
             Text(
-                "Sign Up",
+                "Sign In",
                 color = Color(0xFF3366FF),
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clickable {
-                    navController.navigate("signUp")
+                    navController.navigate("signIn")
                 })
         }
-    }
-}
 
-@Composable
-fun SocialButton(text: String, iconRes: Int) {
-    OutlinedButton(
-        onClick = { },
-        modifier = Modifier
-            .height(48.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFF5F5F5))
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = null,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text, fontSize = 14.sp)
-        }
     }
 }

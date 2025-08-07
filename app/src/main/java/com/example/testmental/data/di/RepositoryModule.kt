@@ -2,8 +2,10 @@ package com.example.testmental.data.di
 
 import com.example.testmental.data.repository.impl.NotesRepositoryImpl
 import com.example.testmental.data.repository.impl.SelfCareRepositoryImpl
+import com.example.testmental.data.repository.impl.UserRepositoryImpl
 import com.example.testmental.domain.repository.NotesRepository
 import com.example.testmental.domain.repository.SelfCareRepository
+import com.example.testmental.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,4 +27,10 @@ abstract class RepositoryModule {
     abstract fun bindSelfCareRepository(
         impl: SelfCareRepositoryImpl
     ): SelfCareRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(
+        impl: UserRepositoryImpl
+    ): UserRepository
 }

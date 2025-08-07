@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.testmental.data.local.AppDatabase
 import com.example.testmental.data.local.NoteDao
 import com.example.testmental.data.local.SelfCareDao
+import com.example.testmental.data.local.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,10 +21,12 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-            context,
+            context.applicationContext,
             AppDatabase::class.java,
-            "app_database"
-        ).build()
+            "appDatabase.db"
+        )
+            .fallbackToDestructiveMigration(false)  // добавь для разработки, чтобы не было проблем с миграциями
+            .build()
     }
 
     @Provides
@@ -31,4 +34,7 @@ object DatabaseModule {
 
     @Provides
     fun provideSelfCareDao(db: AppDatabase): SelfCareDao = db.selfCareDao()
+
+    @Provides
+    fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
 }

@@ -4,7 +4,7 @@ package com.example.testmental.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.testmental.data.remote.Converters
+import com.example.testmental.data.Converters
 
 @Entity(tableName = "selfcare_table")
 @TypeConverters(Converters::class)
