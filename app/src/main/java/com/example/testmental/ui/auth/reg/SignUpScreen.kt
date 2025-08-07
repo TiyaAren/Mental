@@ -18,12 +18,16 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,14 +43,31 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.testmental.ui.auth.UserViewModel
+import com.example.testmental.ui.theme.ColorGradient3
 
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun SignUpScreen(
+    navController: NavController,
+    viewModel: UserViewModel = hiltViewModel()
+) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
+
+    val state by viewModel.state.collectAsState()
+
+    // 🔽 Эффект при успешной регистрации
+    LaunchedEffect(state) {
+        if (state is UserViewModel.AuthState.Success) {
+            navController.navigate("startSurvey") {
+                popUpTo("signUp") { inclusive = true }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -55,10 +76,8 @@ fun SignUpScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Emoji icon placeholder
         Box(
             modifier = Modifier
-//                .size(64.dp)
                 .background(Color(0xFFEFEFFF), RoundedCornerShape(20.dp)),
             contentAlignment = Alignment.Center
         ) {
@@ -66,7 +85,6 @@ fun SignUpScreen(navController: NavController) {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
         Text("Sign Up", fontSize = 26.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -75,9 +93,6 @@ fun SignUpScreen(navController: NavController) {
             style = TextStyle(fontSize = 14.sp, color = Color.Gray),
             modifier = Modifier.padding(horizontal = 16.dp)
         )
-
-
-
         Spacer(modifier = Modifier.height(50.dp))
 
         TextField(
@@ -92,11 +107,11 @@ fun SignUpScreen(navController: NavController) {
                 disabledContainerColor = Color(0xFFF1F1F1),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
-
             )
-
         )
+
         Spacer(modifier = Modifier.height(8.dp))
+
         TextField(
             value = email,
             onValueChange = { email = it },
@@ -109,16 +124,15 @@ fun SignUpScreen(navController: NavController) {
                 disabledContainerColor = Color(0xFFF1F1F1),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
-
             )
-
         )
+
         Spacer(modifier = Modifier.height(8.dp))
+
         TextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             colors = TextFieldDefaults.colors(
@@ -127,9 +141,7 @@ fun SignUpScreen(navController: NavController) {
                 disabledContainerColor = Color(0xFFF1F1F1),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
-
             ),
-
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val image = if (isPasswordVisible)
@@ -139,15 +151,28 @@ fun SignUpScreen(navController: NavController) {
                     Icon(imageVector = image, contentDescription = null)
                 }
             },
-
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
-
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = {},
+            onClick = {
+                viewModel.registerUser(
+                    name = name,
+                    email = email,
+                    password = password,
+                    onSuccess = {
+                        navController.navigate("signIn")
+//                        {
+//                            popUpTo("signUp") { inclusive = true }
+//                        }
+                    },
+                    onError = { error ->
+                        // ничего не делаем здесь, т.к. UI уже обрабатывает ошибки через state
+                    }
+                )
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -167,8 +192,23 @@ fun SignUpScreen(navController: NavController) {
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clickable {
                     navController.navigate("signIn")
-                })
+                }
+            )
         }
 
+        when (state) {
+            is UserViewModel.AuthState.Loading -> CircularProgressIndicator()
+            is UserViewModel.AuthState.Success -> {
+                Text("User registered successfully!", color = ColorGradient3)
+                // Переход в LaunchedEffect выше
+            }
+
+            is UserViewModel.AuthState.Error -> {
+                val error = (state as RegisterState.Error).message
+                Text("Error: $error", color = MaterialTheme.colorScheme.error)
+            }
+
+            else -> {}
+        }
     }
 }
