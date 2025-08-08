@@ -204,7 +204,7 @@ fun SignUpScreen(
             }
 
             is UserViewModel.AuthState.Error -> {
-                val error = (state as RegisterState.Error).message
+                val error = (state as UserViewModel.AuthState.Error).message
                 Text("Error: $error", color = MaterialTheme.colorScheme.error)
             }
 

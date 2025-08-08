@@ -18,6 +18,10 @@ class UserRepositoryImpl @Inject constructor(
         apiService.registerUser(user)         // отправка на сервер
     }
 
+    override suspend fun loginUser(user: User) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getUserByEmail(email: String): User? {
         return dao.getUserByEmail(email)?.toDomain()
     }
